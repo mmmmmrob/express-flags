@@ -21,11 +21,11 @@ const baseFlags = {
 }
 
 const flagFn = expressFlags(baseFlags)
-const req = { cookies }
-flagFn(req)
+const [req, res] = [{ cookies }, {}]
+flagFn(req, res, () => {})
 
 describe('express-flags', () => {
-  it('should set override from env values', () => {
+  it('should set override from cookie values', () => {
     expect(req.flags.foo).toEqual('qip')
   })
 
@@ -47,19 +47,19 @@ describe('express-flags', () => {
 
   it('should process request with no cookies', () => {
     const newReq = {}
-    flagFn(newReq)
+    flagFn(newReq, {}, () => {})
     expect(newReq.flags.foo).toEqual('bar')
   })
 
   it('should process request with empty cookies', () => {
     const newReq = { cookies: {} }
-    flagFn(newReq)
+    flagFn(newReq, {}, () => {})
     expect(newReq.flags.foo).toEqual('bar')
   })
 
   it('should process each request seperately', () => {
     const newReq = { cookies: { FL_foo: 'quux' } }
-    flagFn(newReq)
+    flagFn(newReq, {}, () => {})
     expect(newReq.flags.foo).toEqual('quux')
   })
 })

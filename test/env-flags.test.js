@@ -2,11 +2,6 @@
 
 const expressFlags = require('../lib/index.js')
 
-process.env.FLAG_foo = 'qip'
-process.env.FLAG_qip = 'true'
-process.env.FLAG_qux = '9'
-process.env.NOT_A_FLAG_quux = 'enabled'
-
 const baseFlags = {
   env: /^FLAG_/,
   flags: {
@@ -17,11 +12,25 @@ const baseFlags = {
   }
 }
 
-const flagFn = expressFlags(baseFlags)
-const req = {}
-flagFn(req)
+const [req, res] = [{}, {}]
 
 describe('express-flags', () => {
+  beforeAll(() => {
+    process.env.FLAG_foo = 'qip'
+    process.env.FLAG_qip = 'true'
+    process.env.FLAG_qux = '9'
+    process.env.NOT_A_FLAG_quux = 'enabled'
+    const flagFn = expressFlags(baseFlags)
+    flagFn(req, res, () => {})
+  })
+
+  afterAll(() => {
+    delete process.env.FLAG_foo
+    delete process.env.FLAG_qip
+    delete process.env.FLAG_qux
+    delete process.env.NOT_A_FLAG_quux
+  })
+
   it('should set override from env values', () => {
     expect(req.flags.foo).toEqual('qip')
   })

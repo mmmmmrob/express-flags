@@ -18,10 +18,20 @@ describe('express-flags', () => {
     expect(flagFn).toBeInstanceOf(Function)
   })
 
+  it('should take 3 arguments', () => {
+    const flagFn = expressFlags(testFlags)
+    expect(flagFn.length).toEqual(3)
+  })
+
+  it('should call next when done', done => {
+    const flagFn = expressFlags(testFlags)
+    flagFn({}, {}, () => done())
+  })
+
   it('should set flags in flags on req', () => {
     const flagFn = expressFlags(testFlags)
     const req = {}
-    flagFn(req)
+    flagFn(req, {}, () => {})
     expect(req.flags).not.toBeNull()
     expect(req.flags).toBeDefined()
   })
@@ -29,21 +39,21 @@ describe('express-flags', () => {
   it('should set string values', () => {
     const flagFn = expressFlags(testFlags)
     const req = {}
-    flagFn(req)
+    flagFn(req, {}, () => {})
     expect(req.flags.foo).toEqual('bar')
   })
 
   it('should set boolean values', () => {
     const flagFn = expressFlags(testFlags)
     const req = {}
-    flagFn(req)
+    flagFn(req, {}, () => {})
     expect(req.flags.baz).toEqual(true)
   })
 
   it('should set numeric values', () => {
     const flagFn = expressFlags(testFlags)
     const req = {}
-    flagFn(req)
+    flagFn(req, {}, () => {})
     expect(req.flags.qux).toEqual(7)
   })
 })
