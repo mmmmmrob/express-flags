@@ -1,6 +1,6 @@
 {
   "name": "express-flags",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Feature flags module for use with Express",
   "scripts": {
     "test": "jest"
@@ -18,7 +18,7 @@
     "url": "git://github.com/mmmmmrob/express-flags.git"
   },
   "devDependencies": {
-    "jest": "^23.6.0"
+    "jest": "^25.0.0"
   },
   "engines": {
     "node": ">= 8.0"
